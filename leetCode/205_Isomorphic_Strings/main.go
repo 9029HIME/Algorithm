@@ -27,7 +27,7 @@ badc baba这个用例，因为badc字符从头到尾在map都找不到对应的b
 */
 
 func main() {
-	print(isIsomorphic("paper", "title"))
+	print(isIsomorphic("foo", "bar"))
 }
 
 func isIsomorphic(s string, t string) bool {
@@ -37,6 +37,7 @@ func isIsomorphic(s string, t string) bool {
 		return false
 	}
 
+	// 写法1 1次循环搞定 但是 代码冗余
 	var map1 map[rune]rune = make(map[rune]rune)
 	var map2 map[rune]rune = make(map[rune]rune)
 	for i, v := range s {
@@ -56,6 +57,27 @@ func isIsomorphic(s string, t string) bool {
 			return false
 		}
 
+	}
+	return true
+
+	// 写法2 2次循环搞定 代码比较简介
+	//result1 := doCompare(s, t)
+	//result2 := doCompare(t, s)
+	//
+	//return result1 && result2
+}
+
+func doCompare(s string, t string) bool {
+	var compareMap map[rune]rune = make(map[rune]rune)
+	for i, v := range s {
+		sChar := v
+		tChar := t[i]
+		if existTChar := compareMap[sChar]; existTChar == 0 {
+			compareMap[sChar] = rune(tChar)
+		} else if rune(tChar) != existTChar {
+			// 既然你存在，就该比较一下是否相等了，如果不相等必定为false
+			return false
+		}
 	}
 	return true
 }
