@@ -66,3 +66,21 @@ func isSubsequence(s string, t string) bool {
 
 	return false
 }
+
+/**
+1.进阶
+如果有大量输入的 S，称作 S1, S2, ... , Sk 其中 k >= 10亿，你需要依次检查它们是否为 T 的子序列。在这种情况下，你会怎样改变代码？
+
+2.思路
+这么大的量，最适合用动态规划了，如果还是用上面的双指针解法，假设S的数量是K，每个S的长度是len(s)，t的长度是len(t)，那么时间复杂度就是O(K * len(s) * len(t))，因为每个s都需要和k进行一次比较。
+先动态规划算出t字符串【每一个下标开始】后面【每一个字符】第一次出现的下标是什么。大概有len(t) * 26个组合
+*/
+
+func dynamicIsSubsequence(s string, t string) bool {
+	if len(s) > len(t) {
+		return false
+	}
+
+	// 先动态规划算出t的组合 abcdefg 从第一个下标开始，a第一次出现的下标是？ 从第一个下标开始，b第一次出现的下标是？以此类推
+	return false
+}
