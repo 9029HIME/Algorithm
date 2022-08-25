@@ -18,27 +18,84 @@ package main
 4.核心思想
 既然两个都是有序的，那就充分发挥它们有序的特性。使用双指针比较，每次都取两个队列最小的值进行比较，最小的那个值移出来，放到结果链表里
 
+pointer1
 ↓
 1-2-3-4
 
 7-8-9-10
 ↑
+pointer2
 
-1最小
 
+
+
+
+
+pointer1
 ↓
 2-3-4
+
+pointer3
+↓
 1-
+
 7-8-9-10
 ↑
+pointer2
 
-2最小
 
+
+
+
+
+、
+pointer1
 ↓
 3-4
+
+pointer3
+  ↓
 1-2
+
 7-8-9-10
 ↑
+pointer2
+
+
+
+!!!!!!!!!!!!!!!!!!!!如果其中一个pointer指向nil了，直接将另一个pointer的值衔接到pointer3后面!!!!!!!!!!!!!!!!!!!!!!!
+pointer1
+↓
+4
+
+pointer3
+    ↓
+1-2-3
+
+7-8-9-10
+↑
+pointer2
+
+
+
+
+
+pointer1
+↓
+nil
+
+pointer3
+      ↓
+1-2-3-4
+
+7-8-9-10
+↑
+pointer2
+
+if pointer1 = nil{
+ pointer3.next = pointer2
+}
+
 
 */
 func main() {
