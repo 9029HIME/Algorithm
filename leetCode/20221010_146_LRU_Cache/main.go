@@ -15,34 +15,30 @@ void put(int key, int value)如果关键字key 已经存在，则变更其数据
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 func main() {
-	cache := InitLRUCache(4)
-	node1 := &Node{
-		key:   1,
-		value: 100,
-	}
-
-	node2 := &Node{
-		key:   2,
-		value: 100,
-	}
-
-	node3 := &Node{
-		key:   3,
-		value: 100,
-	}
-
-	cache.push(node1)
-	cache.push(node2)
-	cache.push(node3)
+	cache := Constructor(2)
 	cache.introduce()
+	println()
 
-	cache.refresh(node1)
-	fmt.Println()
+	println(cache.Get(2))
 	cache.introduce()
+	println()
 
-	cache.pop(node2)
-	fmt.Println()
+	cache.Put(2, 6)
 	cache.introduce()
+	println()
+
+	println(cache.Get(1))
+
+	cache.Put(1, 5)
+	cache.introduce()
+	println()
+
+	cache.Put(1, 2)
+	cache.introduce()
+	println()
+
+	println(cache.Get(1))
+	println(cache.Get(2))
 }
 
 type LRUCache struct {
@@ -59,6 +55,7 @@ type Node struct {
 	pred  *Node
 }
 
+// InitLRUCache 我其实更倾向用这个做初始化的
 func InitLRUCache(capacity int) *LRUCache {
 	cache := &LRUCache{
 		capacity:      capacity,
@@ -72,16 +69,48 @@ func InitLRUCache(capacity int) *LRUCache {
 }
 
 func Constructor(capacity int) LRUCache {
-	return LRUCache{}
+	cache := LRUCache{
+		capacity:      capacity,
+		linkedHashMap: make(map[int]*Node, capacity),
+		head:          new(Node),
+		tail:          new(Node),
+	}
+	cache.head.next = cache.tail
+	cache.tail.pred = cache.head
+	return cache
 }
 
 func (this *LRUCache) Get(key int) int {
-
-	return 0
+	node := this.linkedHashMap[key]
+	if node != nil {
+		this.refresh(node)
+		return node.value
+	} else {
+		return -1
+	}
 }
 
 func (this *LRUCache) Put(key int, value int) {
+	//插入的时候，还得判断一下要不要覆盖
+	if exist, ok := this.linkedHashMap[key]; ok {
+		exist.value = value
+		this.refresh(exist)
+		return
+	}
 
+	// 容量是否超出?走清除逻辑
+	len := len(this.linkedHashMap)
+	if len == this.capacity && this.head.next != this.tail {
+		key := this.pop(this.head.next)
+		delete(this.linkedHashMap, key)
+	}
+
+	node := &Node{
+		key:   key,
+		value: value,
+	}
+	this.push(node)
+	this.linkedHashMap[key] = node
 }
 
 /**
