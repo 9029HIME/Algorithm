@@ -47,12 +47,19 @@ func (this *BigHeapQueue) sink(i int) {
 	lI := this.leftSon(i)
 	rI := this.rightSon(i)
 
-	if lI > this.length || rI > this.length {
+	if lI > this.length && rI > this.length {
 		// 已经是叶子节点了
 		return
 	}
 	left := this.data[lI]
 	right := this.data[rI]
+
+	if left == 0 {
+		left = -999999
+	}
+	if right == 0 {
+		right = -999999
+	}
 
 	var max int
 	var maxI int

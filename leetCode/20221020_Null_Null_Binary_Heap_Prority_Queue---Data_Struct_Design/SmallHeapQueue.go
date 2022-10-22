@@ -1,5 +1,7 @@
 package _0221020_Null_Null_Binary_Heap_Prority_Queue___Data_Struct_Design
 
+import "math"
+
 /**
 基于最小堆的优先级队列
 */
@@ -24,12 +26,19 @@ func (this *SmallHeapQueue) sink(i int) {
 	lI := this.leftSon(i)
 	rI := this.rightSon(i)
 
-	if lI > this.length || rI > this.length {
+	if lI > this.length && rI > this.length {
 		// 已经是叶子节点了
 		return
 	}
 	left := this.data[lI]
 	right := this.data[rI]
+
+	if left == 0 {
+		left = math.MaxInt
+	}
+	if right == 0 {
+		right = math.MaxInt
+	}
 
 	var max int
 	var maxI int
